@@ -50,24 +50,26 @@ class PhotoManager {
         }
     }
     
-    func downloadThumbnail(photo: FlickrPhoto, callback: (UIImage?) -> Void) {
+    func downloadThumbnail(photo: FlickrPhoto, callback: (UIImage?) -> Void) -> Request? {
         if let url = photo.thumbnailURL {
-            downloadImageAtURL(url, callback: callback)
+            return downloadImageAtURL(url, callback: callback)
         } else {
             callback(nil)
+            return nil
         }
     }
     
-    func downloadPhoto(photo: FlickrPhoto, callback: (UIImage?) -> Void) {
+    func downloadPhoto(photo: FlickrPhoto, callback: (UIImage?) -> Void) -> Request? {
         if let url = photo.photoURL {
-            downloadImageAtURL(url, callback: callback)
+            return downloadImageAtURL(url, callback: callback)
         } else {
             callback(nil)
+            return nil
         }
     }
     
-    func downloadImageAtURL(url: NSURL, callback: (UIImage?) -> Void) {
-        Alamofire.request(.GET, url)
+    func downloadImageAtURL(url: NSURL, callback: (UIImage?) -> Void) -> Request {
+        return Alamofire.request(.GET, url)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["image/*"])
             .responseData { response in

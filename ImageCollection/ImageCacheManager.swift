@@ -8,10 +8,13 @@
 
 import Foundation
 import FastImageCache
+import Alamofire
 
 @objc class ImageCacheManager : NSObject, FICImageCacheDelegate {
     static let thumbnailFormatName = "com.scatteredcloudsoftware.ImageCollection.thumbnailFormat"
     static let thumbnailFamilyName = "com.scatteredcloudsoftware.ImageCollection.thumbnailFamily"
+
+    private var inflightRequests = [NSURL: Request]()
     
     override init() {
         super.init()
@@ -30,8 +33,16 @@ import FastImageCache
     
     func imageCache(imageCache: FICImageCache!, wantsSourceImageForEntity entity: FICEntity!, withFormatName formatName: String!, completionBlock: FICImageRequestCompletionBlock!) {
         if let photo = entity as? FlickrPhoto {
-            PhotoManager.sharedInstance.downloadThumbnail(photo) { image in
+            let request = PhotoManager.sharedInstance.downloadThumbnail(photo) { [weak self] image in
+                if let url = photo.thumbnailURL {
+                    self?.inflightRequests.removeValueForKey(url)
+                }
                 completionBlock(image)
+            }
+
+            if let request = request,
+                url = photo.thumbnailURL {
+                inflightRequests[url] = request
             }
         } else {
             completionBlock(nil)
@@ -40,5 +51,14 @@ import FastImageCache
     
     func imageCache(imageCache: FICImageCache!, errorDidOccurWithMessage errorMessage: String!) {
         NSLog(errorMessage)
+    }
+    
+    func imageCache(imageCache: FICImageCache!, cancelImageLoadingForEntity entity: FICEntity!, withFormatName formatName: String!) {
+        if let photo = entity as? FlickrPhoto,
+            url = photo.thumbnailURL,
+            request = inflightRequests[url] {
+            request.cancel()
+            inflightRequests.removeValueForKey(url)
+        }
     }
 }
