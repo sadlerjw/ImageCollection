@@ -15,7 +15,7 @@ enum Router: URLRequestConvertible {
     private static let apiKey = "e6ce2ae712060be8f036215faf1b9845"
     private static let secret = "9f4eee482ab47ceb"
     
-    case PhotosForUser(userID: String)
+    case PhotosForUser(userID: String, page: Int)
     
     var URLRequest: NSMutableURLRequest {
         get {
@@ -27,9 +27,10 @@ enum Router: URLRequestConvertible {
                 ]
                 
                 switch self {
-                case .PhotosForUser(let userID):
+                case .PhotosForUser(let userID, let page):
                     params["method"] = "flickr.people.getPublicPhotos"
                     params["user_id"] = userID
+                    params["page"] = page
                 }
                 
                 return params

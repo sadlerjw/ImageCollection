@@ -16,17 +16,25 @@ class PhotoManager {
     let processingQueue = dispatch_queue_create("photoManagerProcessingQueue", DISPATCH_QUEUE_CONCURRENT)
     
     private init() {}
-    
+
     func refreshPhotosFromFlickr() {
-        Alamofire.request(Router.PhotosForUser(userID: "51442062@N04"))
+        refreshPhotosFromFlickr(page: 1)
+    }
+    
+    func refreshPhotosFromFlickr(page page: Int) {
+        Alamofire.request(Router.PhotosForUser(userID: "51442062@N04", page: page))
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
-            .responseJSON(queue: processingQueue) { response in
+            .responseJSON(queue: processingQueue) { [weak self] response in
                 switch response.result {
                 case .Success(let rootObject):
                     let photosWrapper = rootObject["photos"] as? [String: AnyObject]
-                    //                let page = photosWrapper?["page"] as? Int
-                    //                let pages = photosWrapper?["pages"] as? Int
+                    if let page = photosWrapper?["page"] as? Int,
+                        let pages = photosWrapper?["pages"] as? Int {
+                        if page < pages {
+                            self?.refreshPhotosFromFlickr(page: page + 1)
+                        }
+                    }
                     
                     if let photoDicts = photosWrapper?["photo"] as? [[String: AnyObject]] {
                         // TODO: instantiate in a realm-capable way
@@ -81,8 +89,8 @@ class PhotoManager {
                     }
                 default:
                     dispatch_async(dispatch_get_main_queue()) {
-                    callback(nil)
-                }
+                        callback(nil)
+                    }
                 }
                 
         }
