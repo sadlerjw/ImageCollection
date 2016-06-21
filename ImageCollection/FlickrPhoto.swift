@@ -33,6 +33,19 @@ class FlickrPhoto: Object {
             return nil
         }
     }
+    
+    var thumbnailURL : NSURL? {
+        get {
+            if let farm = farm.value,
+                server = server,
+                id = id,
+                secret = secret {
+                let urlString = "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)_q.jpg"
+                return NSURL(string: urlString)
+            }
+            return nil
+        }
+    }
 }
 
 // Realm-specific stuff
@@ -44,7 +57,7 @@ extension FlickrPhoto {
         return ["id"]
     }
     override static func ignoredProperties() -> [String] {
-        return ["photoURL"]
+        return ["photoURL", "thumbnailURL"]
     }
 }
 
@@ -85,7 +98,7 @@ extension FlickrPhoto : FICEntity {
     }
     
     var sourceImageUUID : String! {
-        return FICStringWithUUIDBytes(FICUUIDBytesWithString(photoURL?.absoluteString))
+        return FICStringWithUUIDBytes(FICUUIDBytesWithString(thumbnailURL?.absoluteString))
     }
     
     func sourceImageURLWithFormatName(formatName: String!) -> NSURL! {

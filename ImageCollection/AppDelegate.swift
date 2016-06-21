@@ -35,13 +35,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let imageCache = FICImageCache.sharedImageCache()
         imageCache.delegate = self
         imageCache.setFormats([thumbnailFormat])
+        imageCache.reset()
     }
 }
 
 extension AppDelegate : FICImageCacheDelegate {
     func imageCache(imageCache: FICImageCache!, wantsSourceImageForEntity entity: FICEntity!, withFormatName formatName: String!, completionBlock: FICImageRequestCompletionBlock!) {
         if let photo = entity as? FlickrPhoto {
-            PhotoManager.sharedInstance.downloadPhoto(photo, callback: completionBlock)
+            PhotoManager.sharedInstance.downloadThumbnail(photo) { image in
+                completionBlock(image)
+            }
         } else {
             completionBlock(nil)
         }
