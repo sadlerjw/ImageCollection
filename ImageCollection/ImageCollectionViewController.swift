@@ -8,32 +8,15 @@
 
 import UIKit
 import Alamofire
+import RealmSwift
 
 class ImageCollectionViewController: UICollectionViewController {
 
+    let photoManager = PhotoManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        Alamofire.request(Router.PhotosForUser(userID: "51442062@N04"))
-        .validate(statusCode: 200..<300)
-        .validate(contentType: ["application/json"])
-        .responseJSON { response in
-            switch response.result {
-            case .Success(let rootObject):
-                let photosWrapper = rootObject["photos"] as? [String: AnyObject]
-//                let page = photosWrapper?["page"] as? Int
-//                let pages = photosWrapper?["pages"] as? Int
-                
-                if let photoDicts = photosWrapper?["photo"] as? [[String: AnyObject]] {
-                    // TODO: instantiate in a realm-capable way
-                    let photos = photoDicts.flatMap(FlickrPhoto.init(fromDictionary:))
-                    debugPrint(photos)
-                }
-            case .Failure(_):
-                // TODO
-                break
-            }
-        }
+        photoManager.refreshPhotosFromFlickr()
     }
 
     override func didReceiveMemoryWarning() {

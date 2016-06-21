@@ -12,7 +12,8 @@ import Alamofire
 // Adopted directly from Alamofire's README ("API Parameter Abstraction")
 enum Router: URLRequestConvertible {
     static let baseURLString = "https://api.flickr.com/services/rest"
-    private static let apiKey = "c034bfd227f19d6ad1b1f8f49aeb7357"
+    private static let apiKey = "e6ce2ae712060be8f036215faf1b9845"
+    private static let secret = "9f4eee482ab47ceb"
     
     case PhotosForUser(userID: String)
     
