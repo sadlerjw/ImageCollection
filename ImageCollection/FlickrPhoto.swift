@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import FastImageCache
 
 class FlickrPhoto: Object {
     dynamic var id : String?
@@ -22,7 +23,14 @@ class FlickrPhoto: Object {
     
     var photoURL : NSURL? {
         get {
-            return NSURL(string: "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)_b.jpg")
+            if let farm = farm.value,
+                server = server,
+                id = id,
+                secret = secret {
+                let urlString = "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)_b.jpg"
+                return NSURL(string: urlString)
+            }
+            return nil
         }
     }
 }
@@ -67,6 +75,38 @@ extension FlickrPhoto {
             || isFriend.value == nil
             || isFamily.value == nil {
             return nil
+        }
+    }
+}
+
+extension FlickrPhoto : FICEntity {
+    var UUID : String! {
+        return FICStringWithUUIDBytes(FICUUIDBytesWithString(id))
+    }
+    
+    var sourceImageUUID : String! {
+        return FICStringWithUUIDBytes(FICUUIDBytesWithString(photoURL?.absoluteString))
+    }
+    
+    func sourceImageURLWithFormatName(formatName: String!) -> NSURL! {
+        return photoURL
+    }
+    
+    func drawingBlockForImage(image: UIImage!, withFormatName formatName: String!) -> FICEntityImageDrawingBlock! {
+        return { (context: CGContext!, size: CGSize) -> Void in
+            let contextBounds = CGRect(origin: CGPoint(), size: size)
+            
+            // We want to crop and scale the image so if fills the destination
+            let scaleFactor = max(size.height / image.size.height, size.width / image.size.width)
+            let destinationSize = CGSize(width: image.size.width * scaleFactor, height: image.size.height * scaleFactor)
+            let destinationOrigin = CGPoint(x: 0 - (destinationSize.width - contextBounds.width) / 2, y: 0 - (destinationSize.height - contextBounds.height) / 2)
+            let destinationBounds = CGRect(origin: destinationOrigin, size: destinationSize)
+                
+            
+            CGContextClearRect(context, contextBounds)
+            UIGraphicsPushContext(context)
+            image.drawInRect(destinationBounds)
+            UIGraphicsPopContext()
         }
     }
 }

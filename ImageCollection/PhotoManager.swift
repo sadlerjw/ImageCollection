@@ -11,7 +11,11 @@ import RealmSwift
 import Alamofire
 
 class PhotoManager {
+    static let sharedInstance = PhotoManager()
+
     let processingQueue = dispatch_queue_create("photoManagerProcessingQueue", DISPATCH_QUEUE_CONCURRENT)
+    
+    private init() {}
     
     func refreshPhotosFromFlickr() {
         Alamofire.request(Router.PhotosForUser(userID: "51442062@N04"))
@@ -44,6 +48,24 @@ class PhotoManager {
                     break
                 }
         }
-
+    }
+    
+    func downloadPhoto(photo: FlickrPhoto, callback: (UIImage!) -> Void) {
+        if let url = photo.photoURL {
+            Alamofire.request(.GET, url)
+                .validate(statusCode: 200..<300)
+                .validate(contentType: ["image/*"])
+                .responseData { response in
+                    switch response.result {
+                    case .Success(let data):
+                        callback(UIImage(data: data))
+                    default:
+                        callback(nil)
+                    }
+                    
+            }
+        } else {
+            callback(nil)
+        }
     }
 }

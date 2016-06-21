@@ -10,5 +10,6 @@ import Foundation
 import UIKit
 
 class ImageCell : UICollectionViewCell {
-    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
+    var photo : FlickrPhoto?
 }

@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Image Collection View Controller-->
@@ -28,23 +27,21 @@
                                     <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x1N-eg-o4Z">
-                                            <rect key="frame" x="4" y="14" width="42" height="21"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h98-0L-eE1">
+                                            <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
+                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="x1N-eg-o4Z" firstAttribute="leading" secondItem="kXD-ns-nQ2" secondAttribute="leadingMargin" constant="-4" id="Wks-Fs-bkM"/>
-                                    <constraint firstItem="x1N-eg-o4Z" firstAttribute="centerY" secondItem="kXD-ns-nQ2" secondAttribute="centerY" id="lET-I8-YLT"/>
+                                    <constraint firstItem="h98-0L-eE1" firstAttribute="centerY" secondItem="kXD-ns-nQ2" secondAttribute="centerY" id="9Fj-P1-Wuw"/>
+                                    <constraint firstItem="h98-0L-eE1" firstAttribute="height" secondItem="kXD-ns-nQ2" secondAttribute="height" id="Gke-iH-Law"/>
+                                    <constraint firstItem="h98-0L-eE1" firstAttribute="width" secondItem="kXD-ns-nQ2" secondAttribute="width" id="iti-QF-z51"/>
+                                    <constraint firstItem="h98-0L-eE1" firstAttribute="centerX" secondItem="kXD-ns-nQ2" secondAttribute="centerX" id="qdd-3h-4Su"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="label" destination="x1N-eg-o4Z" id="q8a-xM-fJh"/>
+                                    <outlet property="imageView" destination="h98-0L-eE1" id="LXq-Jd-q67"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>

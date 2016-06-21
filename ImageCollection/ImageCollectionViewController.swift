@@ -8,10 +8,12 @@
 
 import UIKit
 import RealmSwift
+import FastImageCache
 
 class ImageCollectionViewController : UICollectionViewController {
 
-    let photoManager = PhotoManager()
+    let photoManager = PhotoManager.sharedInstance
+    let imageCache = FICImageCache.sharedImageCache()
     var realm : Realm!
     var photos : Results<FlickrPhoto>!
     
@@ -65,10 +67,18 @@ extension ImageCollectionViewController /*: UICollectionViewDataSource*/ {
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell", forIndexPath: indexPath) as! ImageCell
+        cell.imageView.image = nil
+        
+        if let oldPhoto = cell.photo {
+            imageCache.cancelImageRetrievalForEntity(oldPhoto, withFormatName: AppDelegate.thumbnailFormatName)
+        }
+        
         if let photo = photoAtIndexPath(indexPath) {
-            cell.label.text = photo.title
-        } else {
-            cell.label.text = "Ruh-roh"
+            cell.photo = photo
+            imageCache.asynchronouslyRetrieveImageForEntity(photo, withFormatName: AppDelegate.thumbnailFormatName) { (photo, formatName, image) in
+                cell.imageView.image = image
+                cell.imageView.layer.addAnimation(CATransition(), forKey: kCATransition)
+            }
         }
         return cell
     }
