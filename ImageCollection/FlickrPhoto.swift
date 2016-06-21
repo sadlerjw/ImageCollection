@@ -20,13 +20,6 @@ class FlickrPhoto: Object {
     let isFriend = RealmOptional<Bool>()
     let isFamily = RealmOptional<Bool>()
     
-    override static func primaryKey() -> String {
-        return "id"
-    }
-    override static func indexedProperties() -> [String] {
-        return ["id"]
-    }
-    
     var photoURL : NSURL? {
         get {
             return NSURL(string: "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)_b.jpg")
@@ -34,6 +27,20 @@ class FlickrPhoto: Object {
     }
 }
 
+// Realm-specific stuff
+extension FlickrPhoto {
+    override static func primaryKey() -> String {
+        return "id"
+    }
+    override static func indexedProperties() -> [String] {
+        return ["id"]
+    }
+    override static func ignoredProperties() -> [String] {
+        return ["photoURL"]
+    }
+}
+
+// Parsing from dictionaries
 extension FlickrPhoto {
     convenience init?(fromDictionary dictionary: [String: AnyObject]) {
         self.init()
