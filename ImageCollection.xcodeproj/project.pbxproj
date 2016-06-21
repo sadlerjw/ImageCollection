@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36128E691D19CAA60070807F /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36128E681D19CAA60070807F /* ImageCacheManager.swift */; };
 		367FDED01D18C49C00E7BAAB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367FDECF1D18C49C00E7BAAB /* AppDelegate.swift */; };
 		367FDED21D18C49C00E7BAAB /* ImageCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367FDED11D18C49C00E7BAAB /* ImageCollectionViewController.swift */; };
 		367FDED51D18C49C00E7BAAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 367FDED31D18C49C00E7BAAB /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		36128E681D19CAA60070807F /* ImageCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		367FDECC1D18C49C00E7BAAB /* ImageCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		367FDECF1D18C49C00E7BAAB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		367FDED11D18C49C00E7BAAB /* ImageCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				367FDEE31D18D06400E7BAAB /* Router.swift */,
 				367FDEE51D19A65900E7BAAB /* PhotoManager.swift */,
 				367FDEE71D19AB0800E7BAAB /* ImageCell.swift */,
+				36128E681D19CAA60070807F /* ImageCacheManager.swift */,
 			);
 			path = ImageCollection;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 				367FDEE41D18D06400E7BAAB /* Router.swift in Sources */,
 				367FDED21D18C49C00E7BAAB /* ImageCollectionViewController.swift in Sources */,
 				367FDEE21D18CAF400E7BAAB /* FlickrPhoto.swift in Sources */,
+				36128E691D19CAA60070807F /* ImageCacheManager.swift in Sources */,
 				367FDEE61D19A65900E7BAAB /* PhotoManager.swift in Sources */,
 				367FDEE81D19AB0800E7BAAB /* ImageCell.swift in Sources */,
 				367FDED01D18C49C00E7BAAB /* AppDelegate.swift in Sources */,

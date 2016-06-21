@@ -10,47 +10,14 @@ import UIKit
 import FastImageCache
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    static let thumbnailFormatName = "com.scatteredcloudsoftware.ImageCollection.thumbnailFormat"
-    static let thumbnailFamilyName = "com.scatteredcloudsoftware.ImageCollection.thumbnailFamily"
-    
+class AppDelegate: UIResponder, UIApplicationDelegate {    
     var window: UIWindow?
+    let imageCacheManager = ImageCacheManager()
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        setupFastImageCache()
         return true
     }
     
-    func setupFastImageCache() {
-        let thumbnailFormat = FICImageFormat()
-        thumbnailFormat.name = AppDelegate.thumbnailFormatName
-        thumbnailFormat.family = AppDelegate.thumbnailFamilyName
-        thumbnailFormat.style = .Style32BitBGR
-        thumbnailFormat.imageSize = ImageCollectionViewController.photoSize()
-        thumbnailFormat.maximumCount = 250
-        thumbnailFormat.devices = [.Pad, .Phone]
-        
-        let imageCache = FICImageCache.sharedImageCache()
-        imageCache.delegate = self
-        imageCache.setFormats([thumbnailFormat])
-        imageCache.reset()
-    }
-}
 
-extension AppDelegate : FICImageCacheDelegate {
-    func imageCache(imageCache: FICImageCache!, wantsSourceImageForEntity entity: FICEntity!, withFormatName formatName: String!, completionBlock: FICImageRequestCompletionBlock!) {
-        if let photo = entity as? FlickrPhoto {
-            PhotoManager.sharedInstance.downloadThumbnail(photo) { image in
-                completionBlock(image)
-            }
-        } else {
-            completionBlock(nil)
-        }
-    }
-    
-    func imageCache(imageCache: FICImageCache!, errorDidOccurWithMessage errorMessage: String!) {
-        NSLog(errorMessage)
-    }
 }

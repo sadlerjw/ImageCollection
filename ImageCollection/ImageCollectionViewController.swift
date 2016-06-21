@@ -70,12 +70,12 @@ extension ImageCollectionViewController /*: UICollectionViewDataSource*/ {
         cell.imageView.image = nil
         
         if let oldPhoto = cell.photo {
-            imageCache.cancelImageRetrievalForEntity(oldPhoto, withFormatName: AppDelegate.thumbnailFormatName)
+            imageCache.cancelImageRetrievalForEntity(oldPhoto, withFormatName: ImageCacheManager.thumbnailFormatName)
         }
         
         if let photo = photoAtIndexPath(indexPath) {
             cell.photo = photo
-            imageCache.asynchronouslyRetrieveImageForEntity(photo, withFormatName: AppDelegate.thumbnailFormatName) { (photo, formatName, image) in
+            imageCache.asynchronouslyRetrieveImageForEntity(photo, withFormatName: ImageCacheManager.thumbnailFormatName) { (photo, formatName, image) in
                 cell.imageView.image = image
                 cell.imageView.layer.addAnimation(CATransition(), forKey: kCATransition)
             }
