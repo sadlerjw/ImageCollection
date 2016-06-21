@@ -72,12 +72,17 @@ class PhotoManager {
         return Alamofire.request(.GET, url)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["image/*"])
-            .responseData { response in
+            .responseData(queue: processingQueue) { response in
                 switch response.result {
                 case .Success(let data):
-                    callback(UIImage(data: data))
+                    let image = UIImage(data: data)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        callback(image)
+                    }
                 default:
+                    dispatch_async(dispatch_get_main_queue()) {
                     callback(nil)
+                }
                 }
                 
         }
