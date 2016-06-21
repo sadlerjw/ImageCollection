@@ -15,9 +15,22 @@ class ImageCollectionViewController : UICollectionViewController {
     var realm : Realm!
     var photos : Results<FlickrPhoto>!
     
+    static let idealSpacing : CGFloat = 10
+    static let idealNumberOfItemsPerLine = 3
+    static func photoSize() -> CGSize {
+        let screenBounds = UIScreen.mainScreen().bounds
+        let width = (min(screenBounds.width, screenBounds.height) - CGFloat(idealNumberOfItemsPerLine - 1) * idealSpacing) / CGFloat(idealNumberOfItemsPerLine)
+        return CGSize(width: width, height: width)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         photoManager.refreshPhotosFromFlickr()
+        
+        let layout = collectionView?.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.minimumInteritemSpacing = ImageCollectionViewController.idealSpacing
+        layout.minimumLineSpacing = ImageCollectionViewController.idealSpacing
+        layout.itemSize = ImageCollectionViewController.photoSize()
         
         do {
             realm = try Realm()
