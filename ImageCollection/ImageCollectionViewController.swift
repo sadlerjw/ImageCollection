@@ -30,6 +30,10 @@ class ImageCollectionViewController : UICollectionViewController {
         notificationToken?.stop()
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         photoManager.refreshPhotosFromFlickr()
