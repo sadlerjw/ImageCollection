@@ -38,7 +38,6 @@ class PhotoManager {
                     }
                     
                     if let photoDicts = photosWrapper?["photo"] as? [[String: AnyObject]] {
-                        // TODO: instantiate in a realm-capable way
                         let photos = photoDicts.flatMap(FlickrPhoto.init(fromDictionary:))
                         
                         do {
@@ -52,8 +51,9 @@ class PhotoManager {
                             // TODO
                         }
                     }
-                case .Failure(_):
+                case .Failure(let error):
                     // TODO
+                    NSLog("\(error)")
                     break
                 }
         }
