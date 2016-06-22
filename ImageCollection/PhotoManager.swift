@@ -12,6 +12,7 @@ import Alamofire
 
 class PhotoManager {
     static let sharedInstance = PhotoManager()
+    static let userID = "99574551@N04"  // No idea who this is, but they have ~700 photos
 
     let processingQueue = dispatch_queue_create("photoManagerProcessingQueue", DISPATCH_QUEUE_CONCURRENT)
     
@@ -22,7 +23,7 @@ class PhotoManager {
     }
     
     func refreshPhotosFromFlickr(page page: Int) {
-        Alamofire.request(Router.PhotosForUser(userID: "51442062@N04", page: page))
+        Alamofire.request(Router.PhotosForUser(userID: userID, page: page))
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
             .responseJSON(queue: processingQueue) { [weak self] response in
