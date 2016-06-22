@@ -16,6 +16,7 @@ class ImageCollectionViewController : UICollectionViewController {
     let imageCache = FICImageCache.sharedImageCache()
     var realm : Realm!
     var photos : Results<FlickrPhoto>!
+    var notificationToken : NotificationToken?
     
     static let idealSpacing : CGFloat = 10
     static let idealNumberOfItemsPerLine = 3
@@ -23,6 +24,10 @@ class ImageCollectionViewController : UICollectionViewController {
         let screenBounds = UIScreen.mainScreen().bounds
         let width = (min(screenBounds.width, screenBounds.height) - CGFloat(idealNumberOfItemsPerLine - 1) * idealSpacing) / CGFloat(idealNumberOfItemsPerLine)
         return CGSize(width: width, height: width)
+    }
+    
+    deinit {
+        notificationToken?.stop()
     }
     
     override func viewDidLoad() {
@@ -37,6 +42,22 @@ class ImageCollectionViewController : UICollectionViewController {
         do {
             realm = try Realm()
             photos = realm.objects(FlickrPhoto)
+            notificationToken = photos.addNotificationBlock { [weak collectionView] change in
+                switch change {
+                case .Initial(_):
+                    collectionView?.reloadSections(NSIndexSet(index: 0))
+                case .Update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                    collectionView?.performBatchUpdates({
+                        collectionView?.deleteItemsAtIndexPaths(deletions.map { NSIndexPath(forItem: $0, inSection: 0) })
+                        collectionView?.insertItemsAtIndexPaths(insertions.map { NSIndexPath(forItem: $0, inSection: 0) })
+                        collectionView?.reloadItemsAtIndexPaths(modifications.map { NSIndexPath(forItem: $0, inSection: 0) })
+                        }, completion: nil)
+                case .Error(let error):
+                    // TODO
+                    NSLog("\(error)")
+                }
+            }
+
         } catch let e {
             // TOOD
         }
