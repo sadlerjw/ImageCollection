@@ -16,7 +16,14 @@ class PhotoManager {
 
     let processingQueue = dispatch_queue_create("photoManagerProcessingQueue", DISPATCH_QUEUE_CONCURRENT)
     
-    private init() {}
+    private init() {
+//        Uncomment to use a completely blank database upon startup
+//        if let realm = try? Realm() {
+//            try? realm.write {
+//                realm.deleteAll()
+//            }
+//        }
+    }
 
     func refreshPhotosFromFlickr() {
         refreshPhotosFromFlickr(page: 1)

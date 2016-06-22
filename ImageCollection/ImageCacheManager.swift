@@ -29,6 +29,9 @@ import Alamofire
         let imageCache = FICImageCache.sharedImageCache()
         imageCache.delegate = self
         imageCache.setFormats([thumbnailFormat])
+        
+//        Uncomment to empty the cache on startup, so we're starting from scratch.
+//        imageCache.reset()
     }
     
     func imageCache(imageCache: FICImageCache!, wantsSourceImageForEntity entity: FICEntity!, withFormatName formatName: String!, completionBlock: FICImageRequestCompletionBlock!) {
