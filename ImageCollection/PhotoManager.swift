@@ -30,7 +30,7 @@ class PhotoManager {
     }
     
     func refreshPhotosFromFlickr(page page: Int) {
-        Alamofire.request(Router.PhotosForUser(userID: userID, page: page))
+        Alamofire.request(Router.PhotosForUser(userID: PhotoManager.userID, page: page))
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
             .responseJSON(queue: processingQueue) { [weak self] response in
